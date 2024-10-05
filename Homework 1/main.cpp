@@ -7,275 +7,164 @@
 #include <cmath>
 
 
+
+void text_visualise(std::string text, int avg_speed) {
+	for (int i = 0; i < text.length(); i++) {
+		std::cout << text[i];
+		if (text[i] == ',') {
+			Sleep(700);
+		}
+		else if (text[i] == '.') {
+			Sleep(1500);
+		}
+		else { Sleep(avg_speed); }
+	}
+}
+
+
+
+
+
 int main(){
+
+	bool task_selected = false;
+
+	int task_to_run = -1, user_choice = -1, input_value = -1;
+
 
 
 
 	std::setlocale(LC_ALL, "Russian");
 	srand(time(0));
-
-
-	int user_choice = 0, task_selection = 0;
-	bool choice_made = false, task_ended = false;
-	
-	std::string homeworks[]{ "[04.09.24]","[11.09.24]"};
-
-
-	std::string homework_material1[]{ "Cow" };
-	std::string homework_material2[]{ "Time to airport", "Scooter cost", "Fuel consumption" };
-	
-	std::vector<std::vector<std::string>> homework_materials = {
-		{ "Cow" },
-		{ "Time to airport", "Scooter cost", "Fuel consumption" }
-	};
+	std::string text_welcome = "Guten abent, what task you would like to run?",
+		error_wrong_num = "You choose the wrong number, try again",
+		choose_tasks_text = "\n\nSelect the task:\n1 - Luck\n2 - Change places\n3 - Max value\n0 - Terminate process",
+		task_one_introdution = "Enter the six digit value",
+		task_two_introdution = "Enter the four digit value",
+		task_three_introdution = "Enter seven values, separated by a enter\n\n",
+		task_answer = "";
 
 
 
-	while (choice_made != true) {
-		user_choice = 0;
-		task_selection = 0;
-		std::cout << "Choose what homework you want to launch\nor write \"0\" to go back\n\n";
-		Sleep(500);
-		for (int i = 0; i != size(homeworks); i++) {
-			Sleep(100);
-			std::cout << i + 1 << " - " << homeworks[i];
-			if (i == size(homeworks) - 1) { std::cout << "(latest)\n\n>>> "; }
-			else { std::cout << std::endl; }
-		}
-		std::cin >> user_choice;
-		if (user_choice > 0 && user_choice <= size(homeworks)) {
-			std::cout << "\nOpening " << homeworks[user_choice - 1] << " homework";
-			Sleep(500);
-			task_ended = false;
-			while (task_ended != true) {
-				std::cout << "\n\n";
-				for (int i = 0; i != size(homework_materials[user_choice - 1]); i++) {
-					Sleep(100);
-					std::cout << i + 1 << " - " << homework_materials[user_choice - 1][i] << std::endl;
-				}
-
-				std::cout << "\n>>> ";
-				std::cin >> task_selection;
-
-				if (task_selection == 0) {
-					choice_made = false;
-					task_ended = true;
-				}
-
-				if (user_choice == 1) {
-					if (task_selection == 1) {
-						int a = rand() % (10 - 30 + 1) + 10;
-						std::string phrase;
-						std::string b = "_";
-
-						if (a < 18) { phrase = "Я не муве по Польски"; }
-						if (a >= 18 && a <= 24) { phrase = "Э, СЛУЖИВЫЙ?! ЭТО НАША ТОЧКА!"; }
-						if (a > 24) { phrase = "Хайр ми, плиз, май ворк\n\tас а программер ис рили хард"; }
 
 
-						for (int i = 0; i < 80; i++) {
-							if (i == 40) {
-								std::cout << "\n<<<\t" << phrase << "\t >>> \n";
 
-							}
-							std::cout << b;
-						}
-						std::cout << "\n\t\t\t\\ /\n\t\t\t \\|_"
-							<< "  ^__^\n\t\t\t      (00)\\_______"
-							<< "\n\t\t\t      (__)\\\t  )\\/\\"
-							<< "\n\t\t\t\t  ||----w |"
-							<< "\n\t\t\t\t  ||     ||";
+
+
+	std::cout << "Hello world\n\n\n";
+
+
+	text_visualise(text_welcome, 25);
+
+
+	while (true) {
+
+		text_visualise(choose_tasks_text, 25);
+		std::cout << "\n>>> ";
+		std::cin >> task_to_run;
+
+		if (task_to_run > 0 && task_to_run <= 3) {
+
+			if (task_to_run == 1){
+				std::string value;
+
+				bool num_is_correct = false;
+
+				int values[6], blank = 0;
+
+
+
+
+				//Forgive me, please, i did this abomination (1'st task), when i was young and stupid
+
+				while (num_is_correct == false) {
+					text_visualise(task_one_introdution, 25);
+					while (value.length() < 6 || value.length() > 6) {
+						std::cout << ">>> ";
+						std::cin >> value;
+						if (value.length() < 6 || value.length() > 6) { text_visualise("Error has occured, looks like you entered the wrong value, try again", 15); }
 					}
-					else { std::cout << "\nWrong number, try again\n"; }
+					for (int i = 0; i < 6; i++) {
+						if (value[i] == '1') { values[i] = 1; }
+						else if (value[i] == '2') { values[i] = 2; }
+						else if (value[i] == '3') { values[i] = 3; }
+						else if (value[i] == '4') { values[i] = 4; }
+						else if (value[i] == '5') { values[i] = 5; }
+						else if (value[i] == '6') { values[i] = 6; }
+						else if (value[i] == '7') { values[i] = 7; }
+						else if (value[i] == '8') { values[i] = 8; }
+						else if (value[i] == '9') { values[i] = 9; }
+						else if (value[i] == '0') { values[i] = 0; blank++; }
+					}
+					if (blank == 6) { num_is_correct = false; }
+					else if (blank < 6) { num_is_correct = true; }
 				}
-					
-
-
-				else if (user_choice == 2) {
-					if (task_selection == 1){
-
-						int distance = -1, time_left = -1;
-						bool distance_entered = false, time_entered = false;
-
-							while (distance_entered == false) {
-								std::cout << "\nENTER A DISTANCE TO AIRPORT IN KILOMETERS! FAST!\n\n>>> ";
-								std::cin >> distance;
-								if (distance > 0){ std::cout << "\nYES, NOW ENTER THE TIME IN MINUTES!\n\n>>> ";
-								distance_entered = true;
-								}
-								else if(distance == 0){ std::cout << "\nErm, you're already on the airport, bruh "; }
-								else{ std::cout << "\n liar liar, pants on fire, reenter the distance "; }
-							}
-							while (time_entered == false) {
-								std::cin >> time_left;
-								if (time_left > 0) {
-									std::cout << "\nWell, cool, you must drive on the minimal " << round(distance/(time_left/60) )
-										<< "km/h,\nto make your way to the airport before the plane will fly away\n";
-									time_entered = true;
-								}
-								else if (time_left == 0) { std::cout << "\nWell, you must teleport yourself right into the plane right now\n";
-								time_entered = true;
-								}
-								else { std::cout << "\n you can not enter this value, try again "; }
-							}
-					}
-
-
-
-					else if (task_selection == 2) {
-
-
-
-
-						int first_hour = -1, first_minute = -1, first_second = -1, second_hour = -1, second_minute = -1, second_second = -1;
-						float minutes_of_ride = 0, seconds_to_count;
-						bool first_entered = false, second_entered = false;
-						std::cout << "Enter the first time you've stepped on the scooter\n";
-						while (first_hour < 0 || first_hour > 24) {
-							std::cout << "\nHour >>> ";
-							std::cin >> first_hour;
-						}
-						while (first_minute < 0 || first_minute > 60) {
-							std::cout << "\nMinute >>> ";
-							std::cin >> first_minute;
-						}
-						while (first_second < 0 || first_second > 60) {
-							std::cout << "\nSecond >>> ";
-							std::cin >> first_second;
-						}
-
-
-						std::cout << "\nNow enter the time when you ended your ride\n";
-						while (second_hour < 0 || second_hour > 24) {
-							std::cout << "\nHour >>> ";
-							std::cin >> second_hour;
-						}
-						while (second_minute < 0 || second_minute > 60) {
-							std::cout << "\nMinute >>> ";
-							std::cin >> second_minute;
-						}
-						while (second_second < 0 || second_second > 60) {
-							std::cout << "\nSecond >>> ";
-							std::cin >> second_second;
-						}
-
-
-
-						while (first_hour != second_hour || first_minute != second_minute || first_second != second_second) {
-							if (first_second == 59) { first_second = -1; first_minute++;minutes_of_ride += 1;}
-							if (first_minute == 60) { first_minute = 0; first_hour++; }
-							if (first_hour == 24) { first_hour = 0; }
-							first_second++;
-
-							seconds_to_count = first_second;
-							minutes_of_ride = minutes_of_ride + remainder(seconds_to_count /100, 2);
-						}
-						std::cout << "Total cost: "<< minutes_of_ride * 2 << std::endl;
-						
-					}
-					
-
-
-
-
-					else if (task_selection == 3) {
-						float distance = -1, consumption = -1, type_1 = -1, type_2 = -1, type_3 = -1,cost_type_1, cost_type_2, cost_type_3;
-
-
-
-						std::cout << "\nEnter the distance in kilometers you're ridin' for\n\n>>> ";
-						while (distance < 1) {
-							std::cin >> distance;
-						}
-						std::cout << "\nEnter the consumption of your car\n[LITERS per 100 kilometers]\n\n>>> ";
-						while (consumption < 1) {
-							std::cin >> consumption;
-						}
-
-
-
-						std::cout << "\nEnter the cost of first fuel[single liter]\n\n>>> ";
-
-						while (type_1 < 1) {
-							std::cin >> type_1;
-						}
-						std::cout << "\nEnter the cost of second fuel[single liter]\n\n>>> ";
-						while (type_2 < 1) {
-							std::cin >> type_2;
-						}
-						std::cout << "\nEnter the cost of third fuel[single liter]\n\n>>> ";
-						while (type_3 < 1) {
-							std::cin >> type_3;
-						}
-						std::cout
-							<< "___________________________________________\n"
-							<< "|                  Fuel                   |\n"
-							<< "|_________________________________________|\n"
-							<< "|   Mark    | Cost per liter | Total cost |\n"
-							<< "|-----------|----------------|------------|\n"
-							<< "|   first   |   " << type_1 << "          |   " << ((consumption / 100) * distance) * type_1 << " |\n"
-							<< "|           |                |            |\n"
-							<< "|  second   |   " << type_2 << "          |   " << ((consumption / 100) * distance) * type_2 << " |\n"
-							<< "|           |                |            |\n"
-							<< "|   third   |   " << type_3 << "          |   " << ((consumption / 100) * distance) * type_3 << " |\n"
-							<< "|___________|________________|____________|\n";
-							
-							
-
-
-
-
-
-
-
-					}
-
-
-
-					else { std::cout << "\nWrong number, try again\n"; }
+				std::cout << std::endl;
+				if ((values[0] + values[1] + values[2]) == (values[3] + values[4] + values[5])) {
+					task_answer = "It is the lucky value!";
 				}
+				else{ task_answer = "It is NOT the lucky one, i'm sorry."; }
+				text_visualise(task_answer, 25);
+			}
+
+
+
+			else if (task_to_run == 2) {
+				text_visualise(task_two_introdution, 25);
+				bool selected = false;
+
+				float num1 = 0, num2 = 0;
+
+
+				while (selected == false) {
+					std::cout << "\n>>> ";
+					std::cin >> input_value;
+					if (input_value / 1000 >= 1 and input_value / 1000 < 10) {
+						selected = true;
+					}
+					else { text_visualise("Error has occured, looks like you entered the wrong value, try again", 15); }
+				}
+				num1 = (input_value - input_value % 100) / 100;
+				num2 = input_value % 100;
+				std::cout << num2;
+				std::cout << num1;
 
 				
 
 
 
 
-
-				
+			}
+			else if (task_to_run == 3) {
+				bool right_value = false;
+				int num_array[7]{}, max_value;
+				text_visualise(task_three_introdution, 15);
+				for (int i = 0; i < 7; i++) {
+					std::cout << i+1 << "/7 - >>> ";
+					std::cin >> num_array[i];
 				}
-		
+				max_value = num_array[0];
+				for (int i = 0; i < 8; i++) {
+					if (num_array[i] > max_value) {
+						max_value = num_array[i];
+					}
+				}
+				text_visualise("\n\nMax value is ", 15);
+				std::cout << max_value;
 
 
-
-		
-		
-				
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+			}
 
 
 		}
-		else if (user_choice == 0) {
-			choice_made = true;
-			task_ended = true;
+		else if (task_to_run == 0) {
+			return 0;
 		}
-		else { std::cout << "\nWrong number, try again\n";
-		user_choice = 0;
-		task_selection = 0; 
+		else {
+			text_visualise(error_wrong_num, 25);
 		}
+
+
 	}
 	return 0;
 }
