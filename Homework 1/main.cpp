@@ -1,23 +1,37 @@
 #include <iostream>
-#include <windows.h>
-#include <vector>
-#include <random>
-#include <string>
-#include <ctime>
 #include <cmath>
+#include <windows.h>
+#include <random>
+#include <cstdlib>
+#include <ctime>
+#include <vector>
+
+const int num_array_size = 20;
+
+void random_values(int num_array[num_array_size]) {
+	for (int i = 0; i < num_array_size; i++) {
+		num_array[i] = rand() % 27 - 8;
+	}}
 
 
+int min_max_search(int num_array[num_array_size], char type_of) {
+	int min = num_array[0], max = num_array[0];
+	for (int i = 0; i < num_array_size; i++) {
+		if (num_array[i] > max) { max = num_array[i]; }
+		if (num_array[i] < min) { min = num_array[i]; }
+	}
+	if (type_of == '<') { return min; }
+	if (type_of == '>') { return max; }
+}
 
-void text_visualise(std::string text, int avg_speed) {
-	for (int i = 0; i < text.length(); i++) {
-		std::cout << text[i];
-		if (text[i] == ',') {
-			Sleep(700);
-		}
-		else if (text[i] == '.') {
-			Sleep(1500);
-		}
-		else { Sleep(avg_speed); }
+void array_out(int num_array[num_array_size]) {
+	for (int i = 0; i < num_array_size; i++) {
+		std::cout << i << "\t";
+	}
+	std::cout << std::endl;
+	for (int i = 0; i < num_array_size; i++) {
+		std::cout << num_array[i] << "\t";
+		 
 	}
 }
 
@@ -25,146 +39,112 @@ void text_visualise(std::string text, int avg_speed) {
 
 
 
-int main(){
-
-	bool task_selected = false;
-
-	int task_to_run = -1, user_choice = -1, input_value = -1;
-
-
-
-
-	std::setlocale(LC_ALL, "Russian");
+int main() {
 	srand(time(0));
-	std::string text_welcome = "Guten abent, what task you would like to run?",
-		error_wrong_num = "You choose the wrong number, try again",
-		choose_tasks_text = "\n\nSelect the task:\n1 - Luck\n2 - Change places\n3 - Max value\n0 - Terminate process",
-		task_one_introdution = "Enter the six digit value",
-		task_two_introdution = "Enter the four digit value",
-		task_three_introdution = "Enter seven values, separated by a enter\n\n",
-		task_answer = "";
+	int num_array[num_array_size]{}, choice = 0;
+	do {
+		std::cout << "Enter the number of task\n1 - Random values\n2 - Sum of elements\n3 - Gain\n\n>>> ";
+		std::cin >> choice;
+		system("cls");
+	} while (choice < 1 || choice > 3);
 
 
+	if (choice == 1) {
+		random_values(num_array);
+		array_out(num_array);
+		std::cout << "\n\n minimum: " << min_max_search(num_array, '<');
+		std::cout << "\n maximum: " << min_max_search(num_array, '>');
+		std::cout << "\n\n\n";}
+	else if (choice == 2) {
+		int min_value, max_value, precious_value, answer = 0;
 
+		do {
+			random_values(num_array);
+			array_out(num_array);
+			std::cout << "\n\nFrom id ";
+			std::cin >> min_value;
+			system("cls");
+		} while (min_value < 0 || min_value > num_array_size);
+		do {
+		array_out(num_array);
+		std::cout <<"\n\nFrom id " << min_value << " to id ";
+		std::cin >> max_value;
+		system("cls");
+		} while (max_value < 0||max_value > num_array_size || max_value <= min_value);
+		array_out(num_array);
+		std::cout << "\n\nFrom id " << min_value << " to id "<< max_value <<"\nAND less then ";
+		std::cin >> precious_value;
 
+		for (int i = 0; i < num_array_size; i++) {
+			if (i > min_value && i < max_value && num_array[i] < precious_value) {
+				answer += num_array[i];}}
+		std::cout << "\nSum of all values, that's less then "<< precious_value <<": " << answer << "\n\n";}
 
-
-
-
-	std::cout << "Hello world\n\n\n";
-
-
-	text_visualise(text_welcome, 25);
-
-
-	while (true) {
-
-		text_visualise(choose_tasks_text, 25);
-		std::cout << "\n>>> ";
-		std::cin >> task_to_run;
-
-		if (task_to_run > 0 && task_to_run <= 3) {
-
-			if (task_to_run == 1){
-				std::string value;
-
-				bool num_is_correct = false;
-
-				int values[6], blank = 0;
-
-
-
-
-				//Forgive me, please, i did this abomination (1'st task), when i was young and stupid
-
-				while (num_is_correct == false) {
-					text_visualise(task_one_introdution, 25);
-					while (value.length() < 6 || value.length() > 6) {
-						std::cout << ">>> ";
-						std::cin >> value;
-						if (value.length() < 6 || value.length() > 6) { text_visualise("Error has occured, looks like you entered the wrong value, try again", 15); }
-					}
-					for (int i = 0; i < 6; i++) {
-						if (value[i] == '1') { values[i] = 1; }
-						else if (value[i] == '2') { values[i] = 2; }
-						else if (value[i] == '3') { values[i] = 3; }
-						else if (value[i] == '4') { values[i] = 4; }
-						else if (value[i] == '5') { values[i] = 5; }
-						else if (value[i] == '6') { values[i] = 6; }
-						else if (value[i] == '7') { values[i] = 7; }
-						else if (value[i] == '8') { values[i] = 8; }
-						else if (value[i] == '9') { values[i] = 9; }
-						else if (value[i] == '0') { values[i] = 0; blank++; }
-					}
-					if (blank == 6) { num_is_correct = false; }
-					else if (blank < 6) { num_is_correct = true; }
-				}
-				std::cout << std::endl;
-				if ((values[0] + values[1] + values[2]) == (values[3] + values[4] + values[5])) {
-					task_answer = "It is the lucky value!";
-				}
-				else{ task_answer = "It is NOT the lucky one, i'm sorry."; }
-				text_visualise(task_answer, 25);
+	else if (choice == 3) { 
+		int all_year_gain[12]{}, min_id, max_id, min_gain = 0, max_gain = 0, min_gain_id = 0, max_gain_id = 0;
+		system("cls");
+		for (int i = 0; i < 12; i++) {
+			for (int k = 0; k < i; k++) {
+				std::cout << k+1 <<"\t";
 			}
-
-
-
-			else if (task_to_run == 2) {
-				text_visualise(task_two_introdution, 25);
-				bool selected = false;
-
-				float num1 = 0, num2 = 0;
-
-
-				while (selected == false) {
-					std::cout << "\n>>> ";
-					std::cin >> input_value;
-					if (input_value / 1000 >= 1 and input_value / 1000 < 10) {
-						selected = true;
-					}
-					else { text_visualise("Error has occured, looks like you entered the wrong value, try again", 15); }
-				}
-				num1 = (input_value - input_value % 100) / 100;
-				num2 = input_value % 100;
-				std::cout << num2;
-				std::cout << num1;
-
-				
-
-
-
-
+			std::cout << std::endl;
+			for (int k = 0; k < i; k++) {
+				std::cout << all_year_gain[k] << "\t";
 			}
-			else if (task_to_run == 3) {
-				bool right_value = false;
-				int num_array[7]{}, max_value;
-				text_visualise(task_three_introdution, 15);
-				for (int i = 0; i < 7; i++) {
-					std::cout << i+1 << "/7 - >>> ";
-					std::cin >> num_array[i];
-				}
-				max_value = num_array[0];
-				for (int i = 0; i < 8; i++) {
-					if (num_array[i] > max_value) {
-						max_value = num_array[i];
-					}
-				}
-				text_visualise("\n\nMax value is ", 15);
-				std::cout << max_value;
-
-
+			std::cout<< "\nEnter the gain of the " << i+1 << " month\n>>> ";
+			std::cin >> all_year_gain[i];
+			system("cls");
+		}
+		
+		do {
+			for (int k = 0; k < 12; k++) {
+				std::cout << k + 1 << "\t";
 			}
+			std::cout << std::endl;
+			for (int k = 0; k < 12; k++) {
+				std::cout << all_year_gain[k] << "\t";
+			}
+			std::cout << "\nNow enter range from one month to another,\nto calculate total impact\n>>> ";
+			std::cout << "From month ";
+			std::cin >> min_id;
+			system("cls");
+		} while (min_id < 1 || min_id > 12);
+		do {
+			for (int k = 0; k < 12; k++) {
+				std::cout << k + 1 << "\t";
+			}
+			std::cout << std::endl;
+			for (int k = 0; k < 12; k++) {
+				std::cout << all_year_gain[k] << "\t";
+			}
+			std::cout << "\nNow enter range from one month to another,\nto calculate total impact\n>>> ";
+			std::cout << "From month " << min_id << " to month ";
+			std::cin >> max_id;
+			system("cls");
+		} while (max_id < 1 || max_id > 12 || max_id <= min_id);
+		min_gain = all_year_gain[0];
+		max_gain = all_year_gain[0];
+	
 
+		for (int i = min_id - 1; i < max_id - 1; i++) {
+			if (all_year_gain[i] < min_gain) {
+				min_gain = all_year_gain[i];
+				min_gain_id = i;
+			}
+			if (all_year_gain[i] > max_gain) {
+				max_gain = all_year_gain[i];
+				max_gain_id = i;}}
 
+		
+
+		for (int k = 0; k < 12; k++) {
+			std::cout << k + 1 << "\t";
 		}
-		else if (task_to_run == 0) {
-			return 0;
+		std::cout << std::endl;
+		for (int k = 0; k < 12; k++) {
+			std::cout << all_year_gain[k] << "\t";
 		}
-		else {
-			text_visualise(error_wrong_num, 25);
-		}
-
-
-	}
+		std::cout << "\n\nMax gain were in " << max_gain_id + 1 << " month, it was, in total "<< max_gain
+			<<"\nMin gain were in " << min_gain_id + 1 << " month, it was, in total " << min_gain<< "\n\n\n\n"; }
 	return 0;
 }
